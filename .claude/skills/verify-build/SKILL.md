@@ -12,7 +12,7 @@ Run these from the project root and fix every error before reporting done:
    - it compiles with no errors;
    - every route in the route table is `○ (Static)` or `● (SSG)` (none dynamic);
    - an `/out` folder is produced.
-3. Spot-check the output: each expected route has an `index.html`, e.g. `out/about/index.html`, `out/services/<slug>/index.html`, `out/blog/<slug>/index.html`.
+3. Spot-check the output: each expected route has an `index.html`, e.g. `out/about/index.html`, `out/services/<slug>/index.html`, `out/insights/<slug>/index.html`, `out/contact/index.html`.
 4. Optional visual check: `npx serve out` (or `npm run dev`), then open the pages and check them at mobile (375px), tablet (768px) and desktop (1280px+) widths. Make sure navigation links work and there are no console errors.
 5. Content audit: grep for invented claims before committing. Words like `certified`, `CREST`, `OSCP`, `ISO`, `guarantee`, `100%`, `trusted by`, `clients` or numeric stats must appear only as clearly labelled placeholders or as neutral framework references (e.g. "supports SOC 2 audit evidence").
 
