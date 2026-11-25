@@ -1,26 +1,218 @@
 @import "tailwindcss";
 
+/* Varden: The Survey Route. Two inks (granite, trail red) on a stone survey sheet. */
+@theme {
+  --color-stone: #e9ece6;
+  --color-stone-2: #dfe4dc;
+  --color-paper: #f6f8f4;
+  --color-granite: #14181a;
+  --color-granite-2: #3a4246;
+  --color-muted: #586266;
+  --color-rule: #c5cdc6;
+  --color-contour: #9aaca3;
+  --color-slate: #1e2b33;
+  --color-slate-2: #2a3a44;
+  --color-slate-rule: #3d505c;
+  --color-slate-ink: #c9d4d0;
+  --color-trail: #d22b1c;
+  --color-trail-bright: #ff4a33;
+
+  --font-sans: var(--font-funnel-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-funnel-display), var(--font-funnel-sans), ui-sans-serif, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --radius-card: 6px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --header-h: 68px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-stone);
+  color: var(--color-granite);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+/* Browser surfaces carry the palette */
+::selection {
+  background: var(--color-trail);
+  color: #fff;
+}
+:root {
+  caret-color: var(--color-trail);
+  accent-color: var(--color-trail);
+  scrollbar-color: var(--color-contour) var(--color-stone);
+}
+:focus-visible {
+  outline: 2px solid var(--color-trail);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
+a {
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+}
+
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  .h2 {
+    font-family: var(--font-display);
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    font-size: clamp(2rem, 1.3rem + 2.6vw, 3.4rem);
+    text-wrap: balance;
+  }
+  .h3 {
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    font-size: 1.2rem;
+  }
+  .lede {
+    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+    line-height: 1.55;
+    color: var(--color-granite-2);
+    text-wrap: pretty;
+  }
+  .coord {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Survey grid ground: faint coordinate grid used on survey-sheet sections */
+  .survey-grid {
+    background-image:
+      linear-gradient(to right, rgb(20 24 26 / 0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(20 24 26 / 0.055) 1px, transparent 1px);
+    background-size: 96px 96px;
+  }
+  .survey-grid-dark {
+    background-image:
+      linear-gradient(to right, rgb(201 212 208 / 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(201 212 208 / 0.07) 1px, transparent 1px);
+    background-size: 96px 96px;
+  }
+
+  /* Article reading surface */
+  .prose-varden {
+    font-family: var(--font-serif);
+    font-size: 1.13rem;
+    line-height: 1.72;
+    color: var(--color-granite-2);
+  }
+  .prose-varden > * + * {
+    margin-top: 1.25em;
+  }
+  .prose-varden h2 {
+    font-family: var(--font-display);
+    color: var(--color-granite);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    font-size: 1.65rem;
+    margin-top: 2.2em;
+  }
+  .prose-varden ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-varden ul li {
+    position: relative;
+    padding-left: 1.5em;
+  }
+  .prose-varden ul li + li {
+    margin-top: 0.5em;
+  }
+  .prose-varden ul li::before {
+    content: "";
+    position: absolute;
+    left: 0.2em;
+    top: 0.72em;
+    width: 0.5em;
+    height: 0.5em;
+    border: 1.5px solid var(--color-trail);
+    transform: rotate(45deg);
+  }
+}
+
+/* Scroll-driven reveals: progressive enhancement, no JS, never hides content where unsupported */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes clip-wipe {
+  from {
+    clip-path: inset(0% 0% 100% 0% round 8px);
+  }
+  to {
+    clip-path: inset(0% 0% 0% 0% round 8px);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-rise both;
+      animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+      animation-timeline: view();
+      animation-range: entry calc(2% + var(--rd, 0) * 1%) entry calc(75% + var(--rd, 0) * 1%);
+    }
+    .clip-reveal {
+      animation: clip-wipe both;
+      animation-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+      animation-timeline: view();
+      animation-range: entry 5% cover 42%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+pre,
+code {
+  font-variant-ligatures: none;
 }
